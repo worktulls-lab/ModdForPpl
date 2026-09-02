@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "kitmod",
+  "version": "${version}",
+  "name": "KitMod",
+  "description": "Кастомные предметы с 3D-моделями: пицца, пицца-меч, левиафан, коса вампира, шаблон для лавы и декоративные предметы.",
+  "authors": [
+    "TarkMull"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.tarkmull.kitmod.KitMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
