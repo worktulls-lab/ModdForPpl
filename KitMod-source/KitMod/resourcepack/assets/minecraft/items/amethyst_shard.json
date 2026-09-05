@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/amethyst_shard"
+    },
+    "entries": [
+      {
+        "threshold": 6,
+        "model": {
+          "type": "minecraft:model",
+          "model": "kitmod:item/lava_crystal"
+        }
+      }
+    ]
+  }
+}

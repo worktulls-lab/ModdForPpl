@@ -1,0 +1,27 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:block/note_block"
+    },
+    "entries": [
+      {
+        "threshold": 16,
+        "model": {
+          "type": "minecraft:model",
+          "model": "kitmod:item/lava_mold"
+        }
+      },
+      {
+        "threshold": 17,
+        "model": {
+          "type": "minecraft:model",
+          "model": "kitmod:item/lava_mold_filled"
+        }
+      }
+    ]
+  }
+}
