@@ -1,0 +1,64 @@
+name: KitMod
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build plugin
+        working-directory: KitMod-source/KitMod
+        run: mvn -B -ntp package
+
+      - name: Fit item display transforms
+        run: python3 KitMod-source/KitMod/tools/fit_display.py KitMod-source/KitMod/resourcepack/assets/kitmod/models/item
+
+      - name: Zip resource pack
+        run: |
+          cd KitMod-source/KitMod/resourcepack
+          zip -qr "$GITHUB_WORKSPACE/KitModPack.zip" . -x '.*'
+
+      - name: Collect files
+        run: |
+          mkdir -p dist
+          cp KitMod-source/KitMod/target/KitMod-*.jar dist/
+          cp KitModPack.zip dist/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: KitMod
+          path: dist/*
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA1=$(sha1sum KitModPack.zip | cut -d' ' -f1)
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/latest/KitModPack.zip"
+          {
+            echo "KitMod for Paper 1.21.4 — plugin and resource pack."
+            echo ""
+            echo "server.properties:"
+            echo ""
+            echo "    resource-pack=$URL"
+            echo "    resource-pack-sha1=$SHA1"
+            echo "    require-resource-pack=true"
+          } > notes.md
+          cat notes.md >> "$GITHUB_STEP_SUMMARY"
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest dist/* --title "KitMod" --notes-file notes.md
